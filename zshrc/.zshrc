@@ -10,5 +10,6 @@ alias fzfp="fzf -m --preview='bat -n --color=always {}'"
 
 eval "$(pyenv init --path)"
 eval "$(starship init zsh)"
+eval "$(zoxide init zsh)"
 
 . "$HOME/.local/bin/env"
