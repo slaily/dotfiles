@@ -1,3 +1,5 @@
+set -o vi
+
 export PATH="/opt/homebrew/opt/ruby/bin:/opt/homebrew/lib/ruby/gems/3.3.0/bin:$PATH"
 
 source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
