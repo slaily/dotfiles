@@ -12,15 +12,14 @@ HISTFILESIZE=2000
 # Set the pyenv path
 export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-# Set the ruby path
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
     export PATH="/opt/homebrew/opt/ruby/bin:/opt/homebrew/lib/ruby/gems/3.3.0/bin:$PATH"
     source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
     source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 fi
-# Alias definitions.
 
+# Alias definitions.
 if [ -f ~/.zsh_aliases ]; then
     . ~/.zsh_aliases
 fi
@@ -28,5 +27,4 @@ fi
 eval "$(pyenv init --path)"
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
-
-. "$HOME/.local/bin/env"
+eval `ssh-agent`
