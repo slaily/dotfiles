@@ -12,7 +12,6 @@ HISTSIZE=5000
 HISTFILESIZE=7000
 HISTFILE=~/.zsh_history
 
-
 # Paths
 # Set the pyenv path
 export PYENV_ROOT="$HOME/.pyenv"
