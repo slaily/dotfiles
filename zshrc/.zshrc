@@ -1,18 +1,19 @@
 set -o vi
 
-# Ignore all duplicates in the history
-setopt HIST_IGNORE_ALL_DUPS
 # Append to the history file, don't overwrite it
 setopt APPEND_HISTORY
+# History won't show duplicates on search.
+setopt HIST_FIND_NO_DUPS
+# Ignore all duplicates in the history
+setopt HIST_IGNORE_ALL_DUPS
 
 # Set the history size
-HISTSIZE=1000
-HISTFILESIZE=2000
+HISTSIZE=5000
+HISTFILESIZE=7000
 HISTFILE=~/.zsh_history
 
+
 # Paths
-# Set the Oh My Zsh path
-export ZSH="$HOME/.oh-my-zsh"
 # Set the pyenv path
 export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
@@ -26,13 +27,6 @@ fi
 # Alias definitions.
 if [ -f ~/.zsh_aliases ]; then
     . ~/.zsh_aliases
-fi
-
-# Load Oh My Zsh
-if [ -f "$ZSH/oh-my-zsh.sh" ]; then
-  # Oh My Zsh plugins
-  plugins=(zsh-autosuggestions)
-  source $ZSH/oh-my-zsh.sh
 fi
 
 eval "$(pyenv init --path)"
