@@ -1,5 +1,7 @@
 set -o vi
 
+# Turn off sound
+unsetopt BEEP
 # Append to the history file, don't overwrite it
 setopt APPEND_HISTORY
 # History won't show duplicates on search.
