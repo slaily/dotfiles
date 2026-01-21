@@ -30,25 +30,25 @@ sudo pacman -S stow
 
 ## Installation
 
-1. Clone this repository:
+1. Clone this repository anywhere:
 
 ```bash
-git clone https://github.com/slaily/dotfiles.git ~/dotfiles
-cd ~/dotfiles
+git clone https://github.com/slaily/dotfiles.git ~/path/to/dotfiles
+cd ~/path/to/dotfiles
 ```
 
-2. Install all packages:
+2. Install all packages (symlinks are created in `~`):
 
 ```bash
-stow kitty starship zshrc
+stow -t ~ kitty starship zshrc
 ```
 
 Or install packages individually:
 
 ```bash
-stow kitty     # Kitty terminal
-stow starship  # Starship prompt
-stow zshrc     # Zsh configuration
+stow -t ~ kitty     # Kitty terminal
+stow -t ~ starship  # Starship prompt
+stow -t ~ zshrc     # Zsh configuration
 ```
 
 ## Uninstalling
@@ -56,7 +56,7 @@ stow zshrc     # Zsh configuration
 Remove symlinks for specific packages:
 
 ```bash
-stow -D kitty starship zshrc
+stow -t ~ -D kitty starship zshrc
 ```
 
 ## Updating
@@ -65,7 +65,7 @@ Pull the latest changes and re-stow:
 
 ```bash
 git pull
-stow -R kitty starship zshrc
+stow -t ~ -R kitty starship zshrc
 ```
 
 ## Structure
