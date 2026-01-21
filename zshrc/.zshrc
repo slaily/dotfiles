@@ -1,43 +1,75 @@
-set -o vi
+# === Shell Options ===
+set -o vi                      # Use vim keybindings in the terminal (Esc to enter normal mode)
+unsetopt BEEP                  # No terminal sounds
+setopt APPEND_HISTORY HIST_FIND_NO_DUPS HIST_IGNORE_ALL_DUPS  # Cleaner history
 
-# Turn off sound
-unsetopt BEEP
-# Append to the history file, don't overwrite it
-setopt APPEND_HISTORY
-# History won't show duplicates on search.
-setopt HIST_FIND_NO_DUPS
-# Ignore all duplicates in the history
-setopt HIST_IGNORE_ALL_DUPS
-
-# Set the history size
-HISTSIZE=5000
-HISTFILESIZE=7000
+# === History ===
+HISTSIZE=5000                  # Lines kept in memory
+HISTFILESIZE=7000              # Lines kept in file
 HISTFILE=~/.zsh_history
 
-# Paths
-# Set the pyenv path
-export PYENV_ROOT="$HOME/.pyenv"
+# === Environment & PATH ===
+export PYENV_ROOT="$HOME/.pyenv"       # Python version manager location
+export GOPATH="$HOME/go"               # Go workspace (go install puts binaries here)
+export VIRTUAL_ENV_DISABLE_PROMPT=1    # Don't let venv modify prompt (starship handles it)
+
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+export PATH="$PATH:/usr/local/go/bin:$GOPATH/bin"
 
-if [[ "$OSTYPE" == "darwin"* ]]; then
+# === OS-Specific Config ===
+# macOS: Add Homebrew Ruby to PATH
+# Linux: Initialize Linuxbrew if installed
+if [[ "$OSTYPE" == darwin* ]]; then
     export PATH="/opt/homebrew/opt/ruby/bin:/opt/homebrew/lib/ruby/gems/3.3.0/bin:$PATH"
-    source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-    source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-fi
-
-# Alias definitions.
-if [ -f ~/.zsh_aliases ]; then
-    . ~/.zsh_aliases
-fi
-
-eval "$(pyenv init --path)"
-eval "$(starship init zsh)"
-eval "$(zoxide init zsh)"
-eval `ssh-agent`
-
-# Add Homebrew to the PATH if it exists (Linux)
-if [[ "$OSTYPE" == "linux-gnu"* && -d /home/linuxbrew/.linuxbrew ]]; then
+elif [[ "$OSTYPE" == linux-gnu* && -d /home/linuxbrew/.linuxbrew ]]; then
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-    source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-    source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 fi
+
+# === Plugins (requires Homebrew) ===
+# autosuggestions: Shows grayed-out command suggestions as you type (→ to accept)
+# syntax-highlighting: Colors commands green/red based on validity
+if command -v brew &>/dev/null; then
+    source "$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+    source "$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+fi
+
+# === Aliases ===
+# Keep aliases in separate file for cleanliness. Edit ~/.zsh_aliases to add more.
+[[ -f ~/.zsh_aliases ]] && source ~/.zsh_aliases
+
+# === Tool Initialization ===
+eval "$(pyenv init --path)"    # Python version management (pyenv install 3.x, pyenv global 3.x)
+eval "$(starship init zsh)"    # Fancy prompt - config at ~/.config/starship.toml
+eval "$(zoxide init zsh)"      # Smart cd - use 'z' instead of 'cd' to jump to frequent dirs
+eval "$(ssh-agent -s)" &>/dev/null
+ssh-add ~/.ssh/id_github &>/dev/null  # Auto-load GitHub SSH key on shell start
+
+# === Auto Virtual Environment ===
+# Automatically activates Python venv when you cd into a project with .venv/ or venv/
+# Deactivates when you leave. No more "source .venv/bin/activate" needed.
+auto_venv_activate() {
+    local dir="$PWD" venv=""
+
+    # Walk up directory tree to find .venv or venv
+    while [[ "$dir" != "/" ]]; do
+        for name in .venv venv; do
+            [[ -d "$dir/$name" ]] && venv="$dir/$name" && break 2  # break 2 = exit both loops
+        done
+        dir="${dir:h}"  # :h = parent directory (zsh syntax, like dirname)
+    done
+
+    # Activate if found and not already active
+    if [[ -n "$venv" && "$VIRTUAL_ENV" != "$venv" ]]; then
+        echo "🐍 Activated: ${venv/#$HOME/~}"  # ${x/#$HOME/~} = replace $HOME with ~ for display
+        source "$venv/bin/activate"
+    # Deactivate if we left a project with venv
+    elif [[ -z "$venv" && -n "$VIRTUAL_ENV" ]]; then
+        echo "🚫 Deactivated: ${VIRTUAL_ENV/#$HOME/~}"
+        deactivate
+    fi
+}
+
+# Hook the function to run on directory change and before each prompt
+autoload -U add-zsh-hook
+add-zsh-hook chpwd auto_venv_activate   # chpwd = "change pwd" - runs when you cd
+add-zsh-hook precmd auto_venv_activate  # precmd = runs before prompt displays (catches first load)
