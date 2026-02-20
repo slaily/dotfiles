@@ -4,3 +4,7 @@ alias gitp="git pull"
 alias gitdc='git diff --cached'
 alias gitfp='git fetch --prune'
 alias fzfp="fzf -m --preview='bat -n --color=always {}'"
+
+# Copy Kitty terminfo to a remote server (run once per server)
+# Usage: copy-terminfo user@host  or  copy-terminfo -p 2222 user@host
+copy-terminfo() { infocmp -a xterm-kitty | ssh "$@" tic -x -o ~/.terminfo /dev/stdin; }

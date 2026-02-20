@@ -1,11 +1,20 @@
 # === Shell Options ===
 set -o vi                      # Use vim keybindings in the terminal (Esc to enter normal mode)
 unsetopt BEEP                  # No terminal sounds
+
+# Quick escape: type 'jk' fast in insert mode to switch to normal mode
+bindkey -M viins 'jk' vi-cmd-mode
+
+# Word navigation with Ctrl+Arrow (bind in both vi insert and normal modes)
+bindkey -M viins '^[[1;5D' backward-word    # Ctrl+Left  (insert mode)
+bindkey -M viins '^[[1;5C' forward-word     # Ctrl+Right (insert mode)
+bindkey -M vicmd '^[[1;5D' backward-word    # Ctrl+Left  (normal mode)
+bindkey -M vicmd '^[[1;5C' forward-word     # Ctrl+Right (normal mode)
 setopt APPEND_HISTORY HIST_FIND_NO_DUPS HIST_IGNORE_ALL_DUPS  # Cleaner history
 
 # === History ===
-HISTSIZE=5000                  # Lines kept in memory
-HISTFILESIZE=7000              # Lines kept in file
+HISTSIZE=100000                # Lines kept in memory
+SAVEHIST=100000                # Lines saved to file
 HISTFILE=~/.zsh_history
 
 # === Environment & PATH ===
