@@ -47,7 +47,7 @@ fi
 [[ -f ~/.zsh_aliases ]] && source ~/.zsh_aliases
 
 # === Tool Initialization ===
-eval "$(pyenv init --path)"    # Python version management (pyenv install 3.x, pyenv global 3.x)
+eval "$(pyenv init - zsh)"     # Python version management (pyenv install 3.x, pyenv global 3.x)
 eval "$(starship init zsh)"    # Fancy prompt - config at ~/.config/starship.toml
 eval "$(zoxide init zsh)"      # Smart cd - use 'z' instead of 'cd' to jump to frequent dirs
 eval "$(ssh-agent -s)" &>/dev/null
