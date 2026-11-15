@@ -4,6 +4,10 @@ brew "zsh"
 brew "chezmoi"
 brew "mise"
 
+# Containers (OrbStack provides the Docker engine)
+brew "docker"
+brew "docker-compose"
+
 # Zsh plugins
 brew "zsh-autosuggestions"
 brew "zsh-syntax-highlighting"
