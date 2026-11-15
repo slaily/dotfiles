@@ -10,10 +10,6 @@ apply:
 update:
     chezmoi update
 
-# Edit dotfiles source
-edit:
-    chezmoi edit
-
 # Re-run install scripts after changing Brewfile or mise config
 install:
     brew bundle --global
