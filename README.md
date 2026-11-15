@@ -48,6 +48,8 @@ just uninstall
 - [chezmoi](https://www.chezmoi.io/) — dotfile manager
 - [Homebrew](https://brew.sh/) — macOS packages and applications
 - [mise](https://mise.jdx.dev/) — dev tools and language runtimes
+- [Docker](https://www.docker.com/) — container CLI
+- [Docker Compose](https://docs.docker.com/compose/) — multi-container Docker tool
 - [Python](https://www.python.org/) — programming language
 - [Node.js](https://nodejs.org/) — programming language
 - [Go](https://go.dev/) — programming language
