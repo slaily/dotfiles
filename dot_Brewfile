@@ -9,7 +9,7 @@ brew "zsh-autosuggestions"
 brew "zsh-syntax-highlighting"
 
 # Applications
-cask "kitty", args: { adopt: true }
+cask "kitty"
 cask "alfred"
 cask "orbstack"
 cask "tableplus"
