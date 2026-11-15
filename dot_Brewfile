@@ -3,8 +3,6 @@ brew "git"
 brew "zsh"
 brew "chezmoi"
 brew "mise"
-
-# Containers (OrbStack provides the Docker engine)
 brew "docker"
 brew "docker-compose"
 
