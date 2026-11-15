@@ -7,11 +7,8 @@ apply:
 update:
     @chezmoi update
 
-dry:
+dry-run:
     @chezmoi apply --dry-run --verbose
-
-status:
-    @chezmoi status
 
 install-tools:
     @brew bundle --global
