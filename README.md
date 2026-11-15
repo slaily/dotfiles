@@ -43,10 +43,16 @@ Reinstall all Homebrew packages and mise tools from scratch:
 just reinstall
 ```
 
-Clean Homebrew caches and run diagnostics:
+Clean Homebrew caches:
 
 ```bash
 just clean
+```
+
+Run Homebrew diagnostics (warnings won't fail):
+
+```bash
+just doctor
 ```
 
 ## What's installed

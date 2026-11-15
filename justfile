@@ -24,7 +24,10 @@ reinstall:
     @brew bundle --global --force
     @mise install --force
 
-# Clean Homebrew caches and run diagnostics
+# Clean Homebrew caches
 clean:
     @brew cleanup
-    @brew doctor
+
+# Run Homebrew diagnostics
+doctor:
+    @brew doctor || true
