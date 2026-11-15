@@ -1,0 +1,18 @@
+tap "homebrew/bundle"
+
+# Core tooling
+brew "git"
+brew "zsh"
+brew "chezmoi"
+brew "mise"
+
+# Zsh plugins
+brew "zsh-autosuggestions"
+brew "zsh-syntax-highlighting"
+
+# Applications
+cask "kitty"
+cask "vlc"
+
+# Fonts
+cask "font-caskaydia-cove-nerd-font"

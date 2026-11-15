@@ -1,0 +1,11 @@
+[tools]
+python = "latest"
+node = "latest"
+go = "latest"
+
+atuin = "latest"
+starship = "latest"
+fzf = "latest"
+bat = "latest"
+zoxide = "latest"
+just = "latest"
