@@ -24,10 +24,7 @@ reinstall:
     @brew bundle --global --force
     @mise install --force
 
-# Clean Homebrew caches
-clean:
-    @brew cleanup
-
-# Run Homebrew diagnostics
-doctor:
-    @brew doctor || true
+# Uninstall all Homebrew packages/casks and mise tools from this dotfiles
+uninstall:
+    @brew bundle uninstall --force
+    @mise uninstall --all
