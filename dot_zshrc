@@ -1,77 +1,92 @@
 # === Shell Options ===
-set -o vi                      # Use vim keybindings in the terminal (Esc to enter normal mode)
-unsetopt BEEP                  # No terminal sounds
+set -o vi
+unsetopt BEEP
 
-# Quick escape: type 'jk' fast in insert mode to switch to normal mode
 bindkey -M viins 'jk' vi-cmd-mode
 
-# Word navigation with Ctrl+Arrow (bind in both vi insert and normal modes)
-bindkey -M viins '^[[1;5D' backward-word    # Ctrl+Left  (insert mode)
-bindkey -M viins '^[[1;5C' forward-word     # Ctrl+Right (insert mode)
-bindkey -M vicmd '^[[1;5D' backward-word    # Ctrl+Left  (normal mode)
-bindkey -M vicmd '^[[1;5C' forward-word     # Ctrl+Right (normal mode)
+# Ctrl+Arrow word navigation
+bindkey -M viins '^[[1;5D' backward-word
+bindkey -M viins '^[[1;5C' forward-word
+bindkey -M vicmd '^[[1;5D' backward-word
+bindkey -M vicmd '^[[1;5C' forward-word
 
 # === Environment & PATH ===
-export GOPATH="$HOME/go"               # Go workspace (go install puts binaries here)
+export GOPATH="$HOME/go"
 export PATH="$PATH:$GOPATH/bin"
 
-export VIRTUAL_ENV_DISABLE_PROMPT=1    # Don't let venv modify prompt (starship handles it)
+# Let starship handle the prompt; ignore venv prompt changes
+export VIRTUAL_ENV_DISABLE_PROMPT=1
 
 # === Homebrew ===
 eval "$(/opt/homebrew/bin/brew shellenv 2>/dev/null || /usr/local/bin/brew shellenv)"
 
-# === Mise (dev tools & runtimes) ===
-eval "$(mise activate zsh)"
+# === Mise ===
+# Shims are instant; full shell integration loads on first `mise` invocation
+export PATH="$HOME/.local/share/mise/shims:$PATH"
+mise() {
+  unset -f mise
+  eval "$(command mise activate zsh)"
+  mise "$@"
+}
 
-# === Atuin (shell history) ===
-eval "$(atuin init zsh)"       # Ctrl+R for fuzzy history search
+# === Atuin ===
+# Lazy-load history search on first Ctrl+R
+atuin-setup() {
+  unset -f atuin-setup
+  eval "$(atuin init zsh)"
+  zle atuin-search
+}
+zle -N atuin-setup
+bindkey '^R' atuin-setup
 
-# === Zsh Plugins ===
-# Requires Homebrew: zsh-autosuggestions, zsh-syntax-highlighting
+# === Plugins ===
 if command -v brew &>/dev/null; then
-    source "$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
-    source "$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+  source "$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 fi
 
 # === Aliases ===
-# Keep aliases in separate file for cleanliness. Edit ~/.zsh_aliases to add more.
 [[ -f ~/.zsh_aliases ]] && source ~/.zsh_aliases
 
-# === Tool Initialization ===
-eval "$(starship init zsh)"    # Fancy prompt - config at ~/.config/starship.toml
-eval "$(zoxide init zsh)"      # Smart cd - use 'z' instead of 'cd' to jump to frequent dirs
+# === Prompt & navigation ===
+eval "$(starship init zsh)"
+eval "$(zoxide init zsh)"
 
-if [ -z "$SSH_AUTH_SOCK" ]; then
-    eval "$(ssh-agent -s)" &>/dev/null
+# === SSH ===
+# Only add the key if the agent has no identities yet
+if ! ssh-add -l &>/dev/null; then
+  ssh-add -q ~/.ssh/id_github &>/dev/null
 fi
-ssh-add ~/.ssh/id_github &>/dev/null  # Auto-load GitHub SSH key on shell start
 
-# === Auto Virtual Environment ===
-# Automatically activates Python venv when you cd into a project with .venv/ or venv/
-# Deactivates when you leave. No more "source .venv/bin/activate" needed.
+# === Completions ===
+# -C skips the slow .zcompdump freshness check
+autoload -Uz compinit
+compinit -C
+
+# === Auto virtualenv ===
 auto_venv_activate() {
-    local dir="$PWD" venv=""
+  local dir="$PWD" venv=""
 
-    # Walk up directory tree to find .venv or venv
-    while [[ "$dir" != "/" ]]; do
-        for name in .venv venv; do
-            [[ -d "$dir/$name" ]] && venv="$dir/$name" && break 2  # break 2 = exit both loops
-        done
-        dir="${dir:h}"  # :h = parent directory (zsh syntax, like dirname)
+  while [[ "$dir" != "/" ]]; do
+    for name in .venv venv; do
+      [[ -d "$dir/$name" ]] && venv="$dir/$name" && break 2
     done
+    dir="${dir:h}"
+  done
 
-    # Activate if found and not already active
-    if [[ -n "$venv" && "$VIRTUAL_ENV" != "$venv" ]]; then
-        echo "🐍 Activated: ${venv/#$HOME/~}"  # ${x/#$HOME/~} = replace $HOME with ~ for display
-        source "$venv/bin/activate"
-    # Deactivate if we left a project with venv
-    elif [[ -z "$venv" && -n "$VIRTUAL_ENV" ]]; then
-        echo "🚫 Deactivated: ${VIRTUAL_ENV/#$HOME/~}"
-        deactivate
-    fi
+  if [[ -n "$venv" && "$VIRTUAL_ENV" != "$venv" ]]; then
+    echo "🐍 Activated: ${venv/#$HOME/~}"
+    source "$venv/bin/activate"
+  elif [[ -z "$venv" && -n "$VIRTUAL_ENV" ]]; then
+    echo "🚫 Deactivated: ${VIRTUAL_ENV/#$HOME/~}"
+    deactivate
+  fi
 }
 
-# Hook the function to run on directory change and before each prompt
 autoload -U add-zsh-hook
-add-zsh-hook chpwd auto_venv_activate   # chpwd = "change pwd" - runs when you cd
-add-zsh-hook precmd auto_venv_activate  # precmd = runs before prompt displays (catches first load)
+add-zsh-hook chpwd auto_venv_activate
+add-zsh-hook precmd auto_venv_activate
+
+# === Syntax highlighting (must be last) ===
+if command -v brew &>/dev/null; then
+  source "$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+fi
