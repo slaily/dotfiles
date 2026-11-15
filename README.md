@@ -11,19 +11,30 @@ chezmoi init --apply https://github.com/slaily/dotfiles.git
 exec zsh
 ```
 
-## Daily use
+## Usage
 
-```bash
-chezmoi apply    # apply local changes
-chezmoi update   # pull and apply
-```
-
-Or with just:
+Apply local changes:
 
 ```bash
 just apply
+```
+
+Pull the latest dotfiles from GitHub and apply them:
+
+```bash
 just update
-just install
+```
+
+Preview what would change without applying:
+
+```bash
+just dry-run
+```
+
+Install or update Homebrew packages and mise tools:
+
+```bash
+just install-tools
 ```
 
 ## What's installed
