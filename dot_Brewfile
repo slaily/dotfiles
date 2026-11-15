@@ -10,6 +10,7 @@ brew "zsh-syntax-highlighting"
 
 # Applications
 cask "kitty", args: { adopt: true }
+cask "alfred", args: { adopt: true }
 
 # Fonts
 cask "font-caskaydia-cove-nerd-font"
