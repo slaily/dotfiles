@@ -37,12 +37,6 @@ Install missing Homebrew packages and mise tools:
 just install
 ```
 
-Reinstall all Homebrew packages and mise tools from scratch:
-
-```bash
-just reinstall
-```
-
 Uninstall all Homebrew packages/casks and mise tools managed by this dotfiles:
 
 ```bash

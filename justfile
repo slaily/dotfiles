@@ -19,11 +19,6 @@ install:
     @brew bundle --global
     @mise install
 
-# Reinstall all Homebrew packages and mise tools from scratch
-reinstall:
-    @brew bundle --global --force
-    @mise install --force
-
 # Uninstall all Homebrew packages/casks and mise tools from this dotfiles
 uninstall:
     @brew bundle uninstall --force
