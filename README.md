@@ -1,6 +1,6 @@
 # Dotfiles
 
-macOS environment managed with chezmoi, Homebrew, mise, and atuin.
+Personal macOS environment.
 
 ## Install
 
