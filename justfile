@@ -6,7 +6,7 @@ default:
 apply:
     @chezmoi apply
 
-# Pull latest dotfiles and apply
+# Pull latest dotfiles from GitHub and apply
 update:
     @chezmoi update
 
@@ -14,12 +14,17 @@ update:
 dry-run:
     @chezmoi apply --dry-run --verbose
 
-# Install Homebrew packages and mise tools
-install-tools:
+# Install missing Homebrew packages and mise tools
+install:
     @brew bundle --global
     @mise install
 
-# Reinstall dotfiles-managed environment from Brewfile and mise config
-install-env:
+# Reinstall all Homebrew packages and mise tools from scratch
+reinstall:
     @brew bundle --global --force
     @mise install --force
+
+# Clean Homebrew caches and run diagnostics
+clean:
+    @brew cleanup
+    @brew doctor

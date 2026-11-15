@@ -31,10 +31,22 @@ Preview what would change without applying:
 just dry-run
 ```
 
-Install or update Homebrew packages and mise tools:
+Install missing Homebrew packages and mise tools:
 
 ```bash
-just install-tools
+just install
+```
+
+Reinstall all Homebrew packages and mise tools from scratch:
+
+```bash
+just reinstall
+```
+
+Clean Homebrew caches and run diagnostics:
+
+```bash
+just clean
 ```
 
 ## What's installed
