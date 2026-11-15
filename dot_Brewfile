@@ -15,6 +15,7 @@ cask "orbstack"
 cask "tableplus"
 cask "maccy"
 cask "rectangle", args: { adopt: true }
+cask "bitwarden", args: { adopt: true }
 
 # Fonts
 cask "font-caskaydia-cove-nerd-font"
