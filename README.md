@@ -26,9 +26,19 @@ just update
 just install
 ```
 
-## What's where
+## What's installed
 
-- `dot_Brewfile` — Homebrew packages
-- `dot_config/mise/config.toml` — mise tools
-- `dot_zshrc` — shell config
-- `.chezmoiscripts/` — automated setup
+- [chezmoi](https://www.chezmoi.io/) — dotfile manager
+- [Homebrew](https://brew.sh/) — macOS packages and applications
+- [mise](https://mise.jdx.dev/) — dev tools and language runtimes
+- [Python](https://www.python.org/) — programming language
+- [Node.js](https://nodejs.org/) — programming language
+- [Go](https://go.dev/) — programming language
+- [zsh](https://www.zsh.org/) with vi mode, autosuggestions, and syntax highlighting
+- [starship](https://starship.rs/) — minimal, fast prompt
+- [atuin](https://atuin.sh/) — searchable shell history via Ctrl+R
+- [zoxide](https://github.com/ajeetdsouza/zoxide) — smart directory jumping
+- [bat](https://github.com/sharkdp/bat) — syntax-highlighted file viewer
+- [just](https://just.systems/) — command runner for project recipes
+- [kitty](https://sw.kovidgoyal.net/kitty/) — GPU-based terminal emulator
+- [Caskaydia Cove Nerd Font](https://github.com/ryanoasis/nerd-fonts) — patched font with icons
