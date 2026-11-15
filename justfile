@@ -18,3 +18,8 @@ dry-run:
 install-tools:
     @brew bundle --global
     @mise install
+
+# Reinstall dotfiles-managed environment from Brewfile and mise config
+install-env:
+    @brew bundle --global --force
+    @mise install --force
