@@ -1,16 +1,18 @@
-# List available recipes
 default:
     @just --list
 
-# Apply local chezmoi changes
 apply:
-    chezmoi apply
+    @chezmoi apply
 
-# Pull latest dotfiles and apply
 update:
-    chezmoi update
+    @chezmoi update
 
-# Re-run install scripts after changing Brewfile or mise config
-install:
-    brew bundle --global
-    mise install
+dry:
+    @chezmoi apply --dry-run --verbose
+
+status:
+    @chezmoi status
+
+install-tools:
+    @brew bundle --global
+    @mise install
